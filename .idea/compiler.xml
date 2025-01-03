@@ -13,6 +13,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="LazyShop" options="-parameters" />
       <module name="app-manager" options="-parameters" />
     </option>
   </component>

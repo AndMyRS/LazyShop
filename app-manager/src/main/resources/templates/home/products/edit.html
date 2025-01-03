@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Editing the product: @{product.name}</title>
+</head>
+<body>
+<a data-th-href="@{{product.id}(product.id=${product.id})}">&larr; To the product</a>
+<h1>Editing the product: [[${product.name}]]</h1>
+<div data-th-if="${errors}">
+    <h2>Errors occurred</h2>
+    <ul>
+        <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
+    </ul>
+</div>
+<form method="post" data-th-action="@{/home/products/{id}/edit(id=${product.id})}">
+    <label>
+        Product name:<br>
+        <input type="text" name="name" data-th-value="${payload != null ? payload.name : product.name}">
+    </label><br>
+    <label>
+        Product description:<br>
+        <textarea name="description" data-th-text="${payload != null ? payload.description : product.description}"></textarea>
+    </label><br>
+    <button type="submit">Edit</button>
+</form>
+</body> 
+</html>
