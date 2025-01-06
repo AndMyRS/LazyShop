@@ -1,6 +1,6 @@
-package com.andrusevich.appmanager.repository;
+package com.andrusevich.catalogservice.repository;
 
-import com.andrusevich.appmanager.entity.Product;
+import com.andrusevich.catalogservice.entity.Product;
 
 import java.util.List;
 import java.util.Optional;

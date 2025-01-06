@@ -1,7 +1,7 @@
-package com.andrusevich.appmanager.service;
+package com.andrusevich.catalogservice.service;
 
-import com.andrusevich.appmanager.entity.Product;
-import com.andrusevich.appmanager.repository.ProductRepository;
+import com.andrusevich.catalogservice.entity.Product;
+import com.andrusevich.catalogservice.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

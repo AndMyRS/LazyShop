@@ -1,17 +1,11 @@
 package com.andrusevich.appmanager.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public record Product(
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class Product {
+        int id,
 
-    private Integer id;
+        String name,
 
-    private String name;
-
-    private String description;
+        String description
+) {
 }

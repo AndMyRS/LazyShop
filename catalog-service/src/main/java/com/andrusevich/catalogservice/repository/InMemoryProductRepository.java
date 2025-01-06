@@ -1,6 +1,6 @@
-package com.andrusevich.appmanager.repository;
+package com.andrusevich.catalogservice.repository;
 
-import com.andrusevich.appmanager.entity.Product;
+import com.andrusevich.catalogservice.entity.Product;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;

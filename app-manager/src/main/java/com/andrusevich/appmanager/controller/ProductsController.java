@@ -1,27 +1,27 @@
 package com.andrusevich.appmanager.controller;
 
+import com.andrusevich.appmanager.client.BadRequestException;
+import com.andrusevich.appmanager.client.ProductsRestClient;
 import com.andrusevich.appmanager.controller.payload.NewProductPayload;
 import com.andrusevich.appmanager.entity.Product;
-import com.andrusevich.appmanager.service.ProductService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("home/products")
 public class ProductsController {
 
-    private final ProductService service;
+    private final ProductsRestClient client;
 
 
     @GetMapping("all")
     public String getAllProducts(Model model) {
-        model.addAttribute("products", this.service.findAllProducts());
+        model.addAttribute("products", this.client.getAllProducts());
         return "home/products/all";
     }
 
@@ -31,18 +31,14 @@ public class ProductsController {
     }
 
     @PostMapping("create")
-    public String createProduct(@Valid NewProductPayload payload, BindingResult bindingResult,
-                                Model model) {
-        if (bindingResult.hasErrors()) {
+    public String createProduct(NewProductPayload payload, Model model) {
+        try {
+            Product product = this.client.createProduct(payload.name(), payload.description());
+            return "redirect:/home/products/%d".formatted(product.id());
+        } catch (BadRequestException exception) {
             model.addAttribute("payload", payload);
-            model.addAttribute("errors", bindingResult.getAllErrors().stream()
-                    .map(ObjectError::getDefaultMessage)
-                    .toList());
+            model.addAttribute("errors", exception.getErrors());
             return "home/products/new-product";
-        } else {
-            Product product = this.service.createProduct(payload.name(), payload.description());
-            return "redirect:/home/products/%d".formatted(product.getId());
         }
     }
-
 }
