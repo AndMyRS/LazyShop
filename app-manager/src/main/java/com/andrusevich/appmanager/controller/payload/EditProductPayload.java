@@ -1,13 +1,9 @@
 package com.andrusevich.appmanager.controller.payload;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-
 public record EditProductPayload(
-        @NotNull
-        @Size(min = 5, max = 65, message = "Name of product should be between {min} and {max} characters")
+
         String name,
-        @Size(max = 550)
+
         String description
 ) {
 

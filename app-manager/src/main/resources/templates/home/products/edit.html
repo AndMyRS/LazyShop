@@ -5,7 +5,7 @@
     <title>Editing the product: @{product.name}</title>
 </head>
 <body>
-<a data-th-href="@{{product.id}(product.id=${product.id})}">&larr; To the product</a>
+<a data-th-href="@{/home/products/{id}(id=${product.id})}">&larr; To the product</a>
 <h1>Editing the product: [[${product.name}]]</h1>
 <div data-th-if="${errors}">
     <h2>Errors occurred</h2>

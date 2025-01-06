@@ -1,17 +1,14 @@
 package com.andrusevich.appmanager.controller;
 
+import com.andrusevich.appmanager.client.BadRequestException;
+import com.andrusevich.appmanager.client.ProductsRestClient;
 import com.andrusevich.appmanager.controller.payload.EditProductPayload;
-import com.andrusevich.appmanager.controller.payload.NewProductPayload;
 import com.andrusevich.appmanager.entity.Product;
-import com.andrusevich.appmanager.service.ProductService;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.NoSuchElementException;
@@ -21,11 +18,11 @@ import java.util.NoSuchElementException;
 @RequestMapping("home/products/{productId:\\d+}")
 public class ProductController {
 
-    private final ProductService service;
+    private final ProductsRestClient client;
 
     @ModelAttribute("product")
     public Product product(@PathVariable("productId") int productId) {
-        return this.service.getProductById(productId).orElseThrow(() -> new NoSuchElementException("No products found"));
+        return this.client.getProductById(productId).orElseThrow(() -> new NoSuchElementException("No products found"));
     }
 
     @GetMapping
@@ -39,25 +36,23 @@ public class ProductController {
     }
 
     @PostMapping("edit")
-    public String editProduct(@ModelAttribute(name = "product", binding = false) Product product, @Valid EditProductPayload payload,
-                              BindingResult bindingResult,
+    public String editProduct(@ModelAttribute(name = "product", binding = false) Product product,
+                              EditProductPayload payload,
                               Model model) {
-        if (bindingResult.hasErrors()) {
+        try {
+            this.client.editProduct(product.id(), payload.name(), payload.description());
+            return "redirect:/home/products/%d".formatted(product.id());
+        } catch (BadRequestException exception) {
             model.addAttribute("payload", payload);
-            model.addAttribute("errors", bindingResult.getAllErrors().stream()
-                    .map(ObjectError::getDefaultMessage)
-                    .toList());
-            this.service.editProduct(product.getId(), payload.name(), payload.description());
+            model.addAttribute("errors", exception.getErrors());
             return "home/products/edit";
-        } else {
-            this.service.editProduct(product.getId(), payload.name(), payload.description());
-            return "redirect:/home/products/%d".formatted(product.getId());
         }
+
     }
 
     @PostMapping("delete")
     public String deleteProduct(@ModelAttribute("product") Product product) {
-        this.service.deleteProduct(product.getId());
+        this.client.deleteProductById(product.id());
         return "redirect:/home/products/all";
     }
 
