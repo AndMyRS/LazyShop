@@ -22,7 +22,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="LazyShop" options="-parameters" />
+      <module name="LazyShop" options="" />
       <module name="app-manager" options="-parameters" />
       <module name="catalog-service" options="-parameters" />
     </option>

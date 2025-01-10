@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,8 +21,9 @@ public class ProductsController {
 
 
     @GetMapping("all")
-    public String getAllProducts(Model model) {
-        model.addAttribute("products", this.client.getAllProducts());
+    public String getAllProducts(Model model, @RequestParam(name = "filter", required = false) String filter) {
+        model.addAttribute("products", this.client.getAllProducts(filter));
+        model.addAttribute("filter", filter);
         return "home/products/all";
     }
 

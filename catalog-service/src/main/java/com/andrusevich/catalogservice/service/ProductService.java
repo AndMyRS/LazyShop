@@ -2,12 +2,11 @@ package com.andrusevich.catalogservice.service;
 
 import com.andrusevich.catalogservice.entity.Product;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
 
-    List<Product> findAllProducts();
+    Iterable<Product> findAllProducts(String filter);
 
     Product createProduct(String name, String description);
 

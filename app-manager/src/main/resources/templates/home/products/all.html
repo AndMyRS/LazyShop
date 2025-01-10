@@ -7,6 +7,9 @@
 <body>
 <a data-th-href="@{new-product}">+ Create new product</a>
 <h1>List of products from catalogue</h1>
+<form method="get" data-th-action="@{all}">
+    <label>Filter:<input type="text" name="filter" data-th-value="${filter}"><button type="submit">Search</button></label>
+</form>
 <table>
     <thead>
     <tr>
