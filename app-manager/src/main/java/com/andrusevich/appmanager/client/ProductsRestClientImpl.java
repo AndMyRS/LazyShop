@@ -24,10 +24,10 @@ public class ProductsRestClientImpl implements ProductsRestClient {
     private final RestClient client;
 
     @Override
-    public List<Product> getAllProducts() {
+    public List<Product> getAllProducts(String filter) {
         return this.client
                 .get()
-                .uri("home-api/products")
+                .uri("home-api/products?filter={filter}", filter)
                 .retrieve()
                 .body(PRODUCTS_TYPE_REFERENCE);
     }
